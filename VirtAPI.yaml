@@ -1,0 +1,955 @@
+swagger: '2.0'
+info:
+  description: |
+    This is the official definition for the virtapi.
+  version: 1.0.0
+  title: Swagger Virt API
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: ivamsiravi@gmail.com
+    name: Vamsi Ravi
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+# host: petstore.swagger.io
+# basePath: /v2
+tags:
+- name: user
+- name: project
+- name: virt
+- name: mock
+# - themes:
+# - http
+paths:
+  /user:
+    post:
+      tags:
+      - user
+      summary: Create user
+      description: This can only be done by the logged in user.
+      operationId: createUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Created user object
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        201:
+          description: successful operation
+        400:
+          description: Invalid username/password supplied
+  /user/login:
+    post:
+      tags:
+      - user
+      summary: Logs user into the system
+      operationId: loginUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - in: body
+        name: body
+        description: Pet object that needs to be added to the store
+        required: true
+        schema:
+          $ref: '#/definitions/Login'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid username/password supplied
+  /user/{username}/logout:
+    post:
+      tags:
+      - user
+      summary: Logs out current logged in user session
+      operationId: logoutUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        200:
+          description: item created
+          schema:
+            $ref: '#/definitions/Logout'
+        404:
+          description: Username not found
+  /user/{username}:
+    get:
+      tags:
+      - user
+      summary: Get user by user name
+      operationId: getUserByName
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        404:
+          description: User not found
+    put:
+      tags:
+      - user
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: name that need to be updated
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Updated user object
+        required: true
+        schema:
+          $ref: '#/definitions/User'
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/User'
+        400:
+          description: Invalid user supplied
+        404:
+          description: User not found
+    delete:
+      tags:
+      - user
+      summary: Delete user
+      description: This can only be done by the logged in user.
+      operationId: deleteUser
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be deleted
+        required: true
+        type: string
+      responses:
+        204:
+          description: User Deleted Successfully
+        404:
+          description: Username Not found
+  /user/{username}/projects:
+    post:
+      tags:
+      - project
+      summary: Add new project
+      operationId: addProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Pet object that needs to be added to the store
+        required: true
+        schema:
+          $ref: '#/definitions/Project'
+      responses:
+        201:
+          description: item created
+          schema:
+            $ref: '#/definitions/Project'
+        400:
+          description: invalid input, object invalid
+        404:
+          description: user not found
+        409:
+          description: an existing project already exists
+    get:
+      tags:
+      - project
+      summary: Get projects
+      operationId: getProjects
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        200:
+          description: get projects
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Project'
+        404:
+          description: invalid input, object invalid
+  /user/{username}/projects/{projectname}:
+    put:
+      tags:
+      - project
+      summary: Add new project
+      operationId: updateProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Pet object that needs to be added to the store
+        required: true
+        schema:
+          type: array
+          items:
+            $ref: '#/definitions/Project'
+      responses:
+        204:
+          description: item created
+          schema:
+            $ref: '#/definitions/Project'
+        400:
+          description: invalid input, object invalid
+        404:
+          description: User or Project Not Found
+        409:
+          description: an existing item already exists
+    get:
+      tags:
+      - project
+      summary: Add new project
+      operationId: getProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Project'
+        404:
+          description: User or Project Not Found
+    delete:
+      tags:
+      - project
+      summary: Delete existing project
+      operationId: deleteProject
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        204:
+          description: project deleted
+          schema:
+            $ref: '#/definitions/Project'
+        404:
+          description: User or Project Not Found
+  /user/{username}/projects/{projectname}/virts:
+    post:
+      tags:
+      - virt
+      summary: Add new virt
+      operationId: createVirt
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Pet object that needs to be added to the store
+        required: true
+        schema:
+          $ref: '#/definitions/Virt'
+      responses:
+        204:
+          description: item created
+          schema:
+            $ref: '#/definitions/Virt'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+    get:
+      tags:
+      - virt
+      summary: Get Virt
+      operationId: getVirts
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        200:
+          description: get virts
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Virt'
+        400:
+          description: invalid input, object invalid
+  /user/{username}/projects/{projectname}/virts/{virtId}:
+    put:
+      tags:
+      - virt
+      summary: Add new project
+      operationId: updateVirt
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: Pet object that needs to be added to the store
+        required: true
+        schema:
+          $ref: '#/definitions/Virt'
+      responses:
+        204:
+          description: item created
+          schema:
+            $ref: '#/definitions/Virt'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+    get:
+      tags:
+      - virt
+      summary: Add new project
+      operationId: getVirt
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        204:
+          description: item created
+          schema:
+            $ref: '#/definitions/Virt'
+        400:
+          description: invalid input, object invalid
+        409:
+          description: an existing item already exists
+    delete:
+      tags:
+      - virt
+      summary: Add new project
+      operationId: deleteVirt
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: projectname
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        204:
+          description: item deleted
+          schema:
+            $ref: '#/definitions/Virt'
+        404:
+          description: Virt not found
+        409:
+          description: an existing item already exists
+  /mock/{virtId}/{pathstring}:
+    options:
+      tags:
+      - mock
+      summary: head mock
+      operationId: optionsMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    head:
+      tags:
+      - mock
+      summary: head mock
+      operationId: headMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    patch:
+      tags:
+      - mock
+      summary: post mock
+      operationId: patchMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    delete:
+      tags:
+      - mock
+      summary: post mock
+      operationId: deleteMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    get:
+      tags:
+      - mock
+      summary: post mock
+      operationId: getMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    put:
+      tags:
+      - mock
+      summary: post mock
+      operationId: putMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+    post:
+      tags:
+      - mock
+      summary: post mock
+      operationId: postMock
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: virtId
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: pathstring
+        in: path
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      responses:
+        default:
+          description: set the default value
+definitions:
+  Project:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      name:
+        type: string
+      description:
+        type: string
+      status:
+        type: boolean
+      virts:
+        type: array
+        xml:
+          name: virt
+          wrapped: true
+        items:
+          $ref: '#/definitions/Virt'
+  Name:
+    type: object
+    properties:
+      firstname:
+        type: string
+      lastname:
+        type: string
+      middlename:
+        type: string
+      title:
+        type: string
+        enum:
+        - Mr.
+        - Mrs.
+        - Jr.
+        - Master.
+        - Ms.
+  Virt:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      description:
+        type: string
+      name:
+        type: string
+      status:
+        type: boolean
+      endpoint:
+        type: string
+      request:
+        $ref: '#/definitions/Request'
+      response:
+        $ref: '#/definitions/Response'
+  Phone:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      email:
+        type: string
+      primary:
+        type: boolean
+      type:
+        type: string
+        enum:
+        - office
+        - home
+  Email:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      email:
+        type: string
+      primary:
+        type: boolean
+      type:
+        type: string
+        enum:
+        - office
+        - personal
+  Logout:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+  Request:
+    type: object
+    properties:
+      method:
+        type: string
+        enum:
+        - get
+        - put
+        - post
+        - delete
+        - patch
+        - connect
+        - lock
+        - unlock
+        - head
+      path:
+        type: string
+      body:
+        type: string
+      headers:
+        type: array
+        items:
+          $ref: '#/definitions/Header'
+  Response:
+    type: object
+    properties:
+      statusCode:
+        type: integer
+        enum:
+        - 200
+        - 201
+        - 202
+        - 204
+        - 206
+        - 400
+        - 401
+        - 403
+        - 404
+        - 409
+        - 416
+        - 500
+        - 502
+        - 503
+        - 504
+      statusLine:
+        type: string
+      time:
+        type: integer
+        format: int64
+      body:
+        type: string
+      headers:
+        type: array
+        items:
+          $ref: '#/definitions/Header'
+  Header:
+    type: object
+    properties:
+      headerkey:
+        type: string
+      headervalue:
+        type: string
+  Created:
+    type: object
+    properties:
+      createdDate:
+        type: string
+        format: datetime
+      createdBy:
+        type: string
+  Modified:
+    type: object
+    properties:
+      modifiedDate:
+        type: string
+        format: datetime
+      modifiedBy:
+        type: string
+  Login:
+    type: object
+    properties:
+      username:
+        type: string
+      password:
+        type: string
+  Payment:
+    type: object
+    properties:
+      cardnumber:
+        type: string
+      expiredate:
+        type: string
+      cvv:
+        type: integer
+        format: int64
+      name:
+        type: string
+      address:
+        $ref: '#/definitions/Address'
+      primary:
+        type: boolean
+  Address:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      addressline1:
+        type: string
+      addressline2:
+        type: string
+      city:
+        type: string
+      state:
+        type: string
+      country:
+        type: string
+      zip:
+        type: string
+  User:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+      username:
+        type: string
+      usertype:
+        type: string
+        enum:
+        - free
+        - personal
+        - enterprise
+      name:
+        $ref: '#/definitions/Name'
+      email:
+        type: array
+        items:
+          $ref: '#/definitions/Email'
+      sex:
+        type: string
+        enum:
+        - male
+        - female
+        - other
+      password:
+        type: string
+      phone:
+        type: array
+        items:
+          $ref: '#/definitions/Phone'
+      status:
+        type: boolean
+        description: user status
+      payment:
+        type: array
+        items:
+          $ref: '#/definitions/Payment'
+      projects:
+        type: array
+        xml:
+          name: project
+          wrapped: true
+        items:
+          $ref: '#/definitions/Project'
+      created:
+        $ref: '#/definitions/Created'
+      modified:
+        $ref: '#/definitions/Modified'
+    xml:
+      name: User
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /vamsiravi/virtapi
+schemes:
+ - https
+ - http
+# Added by API Auto Mocking Plugin
+# basePath: /vamsiravi/virtapi
+# Added by API Auto Mocking Plugin
+basePath: /vamsiravi/virtapi

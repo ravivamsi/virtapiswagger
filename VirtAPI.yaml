@@ -18,9 +18,46 @@ tags:
 - name: project
 - name: virt
 - name: mock
+- name: payment
 # - themes:
 # - http
 paths:
+  /payment:
+    post:
+      tags:
+      - payment
+      summary: endpoint to post payment
+      description: this can be triggered manually and automaticallu
+      operationId: postPayment
+      produces:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: cvv
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        required: true
+        type: string
+      - name: expiredate
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        type: string
+      - in: body
+        name: body
+        description: payment of the user
+        required: true
+        schema:
+          $ref: '#/definitions/Payment'
+      responses:
+        201:
+          description: successful operation
+        400:
+          description: Invalid username
   /user:
     post:
       tags:

@@ -14,14 +14,54 @@ info:
 # host: petstore.swagger.io
 # basePath: /v2
 tags:
+- name: admin
 - name: user
 - name: project
 - name: virt
-- name: mock
 - name: payment
+- name: mock
 # - themes:
 # - http
 paths:
+  /availability:
+    get:
+      tags:
+      - admin
+      description: "User can be created with this endpoint. \
+      \n\nRules:\n  * **Email must have any one record with primary as true**\n\
+        \  * **Phone must have any one record with primary as true**\n
+        * **Default Status of the User is set to true**\n
+        * **Created Date is mandatory field for every record created**\n
+        * **If Usertype is free, payment information is not required**\n
+        * **If Usertype is personal or corporate, payment information is mandatory**\n
+        \n\n"
+      operationId: checkAvailability
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - application/json
+      - application/xml
+      parameters:
+      - name: username
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        type: string
+      - name: phoneNumber
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        type: string
+      - name: emailaddress
+        in: query
+        description: The name that needs to be fetched. Use user1 for testing.
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Avail'
+        400:
+          description: Bad Request or Bad Parameters
   /payment:
     post:
       tags:
@@ -91,7 +131,13 @@ paths:
     post:
       tags:
       - user
-      summary: Logs user into the system
+      summary: Login user into the system
+      description: "Username can be either unique username or primary email or primary phone number associated with the account.User can be created with this endpoint. \
+      \n\nRules:\n  * **Username can be either unique name**\n\
+        \  * **Username can be primary phone number associated with account**\n
+        * **Username can be primary email address associated with account**\n
+        * **Password should not have details of name in any order**\n
+        \n\n"
       operationId: loginUser
       produces:
       - application/json
@@ -937,6 +983,21 @@ definitions:
         type: string
       zip:
         type: string
+  Avail:
+    type: object
+    properties:
+      username:
+        type: string
+      usernameavail:
+        type: boolean
+      phoneNumber:
+        type: string
+      phoneNumberAvail:
+        type: boolean
+      emailaddress:
+        type: string
+      emailaddressavail:
+        type: boolean
   User:
     type: object
     properties:

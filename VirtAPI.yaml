@@ -63,7 +63,14 @@ paths:
       tags:
       - user
       summary: Create user
-      description: This can only be done by the logged in user.
+      description: "User can be created with this endpoint. \
+      \n\nRules:\n  * **Email must have any one record with primary as true**\n\
+        \  * **Phone must have any one record with primary as true**\n
+        * **Default Status of the User is set to true**\n
+        * **Created Date is mandatory field for every record created**\n
+        * **If Usertype is free, payment information is not required**\n
+        * **If Usertype is personal or corporate, payment information is mandatory**\n
+        \n\n"
       operationId: createUser
       produces:
       - application/json

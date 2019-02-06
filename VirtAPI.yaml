@@ -23,17 +23,122 @@ tags:
 # - themes:
 # - http
 paths:
+  /password:
+    get:
+      tags:
+      - admin
+      summary: password compatibility
+      description: "Check the availability of the Username, Email or Phone Number. \
+      \n\nRules:\n  * **Password - should match the regex**\n\
+      * **a digit must occur at least once**\n\
+      * **a lower case letter must occur at least once**\n\
+      * **an upper case letter must occur at least once**\n\
+      * **a special character must occur at least once**\n\
+      * **no whitespace allowed in the entire string**\n\
+      * **anything, at least eight places though**\n\
+        \n\n"
+      operationId: checkPassword
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - application/json
+      - application/xml
+      parameters:
+      - name: password
+        in: query
+        description: Password field
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Password'
+        400:
+          description: Bad Request or Bad Parameters
+  /password/update:
+    put:
+      tags:
+      - admin
+      summary: password compatibility
+      description: "Check the availability of the Username, Email or Phone Number. \
+      \n\nRules:\n  * **Password - should match the regex**\n\
+      * **a digit must occur at least once**\n\
+      * **a lower case letter must occur at least once**\n\
+      * **an upper case letter must occur at least once**\n\
+      * **a special character must occur at least once**\n\
+      * **no whitespace allowed in the entire string**\n\
+      * **anything, at least eight places though**\n\
+        \n\n"
+      operationId: updatePassword
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - application/json
+      - application/xml
+      parameters:
+      - name: password
+        in: query
+        description: Password field
+        type: string
+      - name: username
+        in: query
+        description: Password field
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Password'
+        400:
+          description: Bad Request or Bad Parameters
+  /password/reset:
+    put:
+      tags:
+      - admin
+      summary: password reset
+      description: "Check the availability of the Username, Email or Phone Number. \
+      \n\nRules:\n  * **Password - should match the regex**\n\
+      * **a digit must occur at least once**\n\
+      * **a lower case letter must occur at least once**\n\
+      * **an upper case letter must occur at least once**\n\
+      * **a special character must occur at least once**\n\
+      * **no whitespace allowed in the entire string**\n\
+      * **anything, at least eight places though**\n\
+        \n\n"
+      operationId: resetPassword
+      produces:
+      - application/json
+      - application/xml
+      consumes:
+      - application/json
+      - application/xml
+      parameters:
+      - name: password
+        in: query
+        description: Password field
+        type: string
+      - name: username
+        in: query
+        description: username field
+        type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            $ref: '#/definitions/Password'
+        400:
+          description: Bad Request or Bad Parameters
   /availability:
     get:
       tags:
       - admin
-      description: "User can be created with this endpoint. \
-      \n\nRules:\n  * **Email must have any one record with primary as true**\n\
-        \  * **Phone must have any one record with primary as true**\n
-        * **Default Status of the User is set to true**\n
-        * **Created Date is mandatory field for every record created**\n
-        * **If Usertype is free, payment information is not required**\n
-        * **If Usertype is personal or corporate, payment information is mandatory**\n
+      summary: check the availability
+      description: "Check the availability of the Username, Email or Phone Number. \
+      \n\nRules:\n  * **Username - check if a username already exists**\n\
+        \  * **PhoneNumber - check if phoneNumber already exists as primary record**\n
+        * **Email Address - check if emailaddress already exists as primary record**\n
         \n\n"
       operationId: checkAvailability
       produces:
@@ -998,6 +1103,13 @@ definitions:
         type: string
       emailaddressavail:
         type: boolean
+  Password:
+    type: object
+    properties:
+      password:
+        type: string
+      message:
+        type: string
   User:
     type: object
     properties:

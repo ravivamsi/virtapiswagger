@@ -209,8 +209,6 @@ paths:
           description: successful operation
         400:
           description: Invalid username
-        404:
-          description: Record Not Found
   /user:
     post:
       tags:
@@ -303,7 +301,7 @@ paths:
       parameters:
       - name: username
         in: path
-        description: The name that needs to be fetched. Use user1 for testing.
+        description: Unique Username.
         required: true
         type: string
       responses:
@@ -336,13 +334,13 @@ paths:
           $ref: '#/definitions/User'
       responses:
         200:
-          description: successful operation
+          description: Update the User
           schema:
             $ref: '#/definitions/User'
         400:
-          description: Invalid user supplied
+          description: Invalid Request Body
         404:
-          description: User not found
+          description: User Not Found
     delete:
       tags:
       - user

@@ -11,7 +11,7 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-# host: petstore.swagger.io
+# host: virtapi.com
 # basePath: /v2
 tags:
   - name: admin
@@ -40,10 +40,8 @@ paths:
       operationId: checkPassword
       produces:
       - application/json
-      - application/xml
       consumes:
       - application/json
-      - application/xml
       parameters:
       - name: password
         in: query
@@ -73,24 +71,18 @@ paths:
       operationId: updatePassword
       produces:
       - application/json
-      - application/xml
       consumes:
       - application/json
-      - application/xml
       parameters:
-      - name: password
-        in: query
-        description: Password field
-        type: string
-      - name: username
-        in: query
-        description: Password field
-        type: string
+      - in: body
+        name: body
+        description: request body to update password
+        required: true
+        schema:
+          $ref: '#/definitions/PasswordUpdate'
       responses:
-        200:
+        204:
           description: successful operation
-          schema:
-            $ref: '#/definitions/Password'
         400:
           description: Bad Request or Bad Parameters
   /password/reset:
@@ -99,39 +91,30 @@ paths:
       - admin
       summary: password reset
       description: "Check the availability of the Username, Email or Phone Number. \
-      \n\nRules:\n  * **Password - should match the regex**\n\
-      * **a digit must occur at least once**\n\
-      * **a lower case letter must occur at least once**\n\
-      * **an upper case letter must occur at least once**\n\
-      * **a special character must occur at least once**\n\
-      * **no whitespace allowed in the entire string**\n\
-      * **anything, at least eight places though**\n\
+      \n\nRules:\n  * **-**\n\
+      * **-**\n\
+      * **-**\n\
+      * **-**\n\
         \n\n"
       operationId: resetPassword
       produces:
       - application/json
-      - application/xml
       consumes:
       - application/json
-      - application/xml
       parameters:
-      - name: password
-        in: query
-        description: Password field
-        type: string
-      - name: username
-        in: query
-        description: username field
-        type: string
+      - in: body
+        name: body
+        description: Updated user object
+        required: true
+        schema:
+          $ref: '#/definitions/PasswordResetVerification'
       responses:
-        200:
+        204:
           description: successful operation
-          schema:
-            $ref: '#/definitions/Password'
         400:
           description: Bad Request or Bad Parameters
   /availability:
-    get:
+    post:
       tags:
       - admin
       summary: check the availability
@@ -143,23 +126,14 @@ paths:
       operationId: checkAvailability
       produces:
       - application/json
-      - application/xml
       consumes:
       - application/json
-      - application/xml
       parameters:
-      - name: username
-        in: query
-        description: The name that needs to be fetched. Use user1 for testing.
-        type: string
-      - name: phoneNumber
-        in: query
-        description: The name that needs to be fetched. Use user1 for testing.
-        type: string
-      - name: emailaddress
-        in: query
-        description: The name that needs to be fetched. Use user1 for testing.
-        type: string
+      - in: body
+        name: body
+        description: payment of the user
+        schema:
+          $ref: '#/definitions/AvailRequest'
       responses:
         200:
           description: successful operation
@@ -182,13 +156,15 @@ paths:
       operationId: postPayment
       produces:
       - application/json
-      - application/xml
+      consumes:
+      - application/json
       parameters:
       - name: username
         in: query
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: paymentId
         in: query
         description: Id of payment to fetch the card details.
@@ -225,7 +201,8 @@ paths:
       operationId: createUser
       produces:
       - application/json
-      - application/xml
+      consumes:
+      - application/json
       parameters:
       - in: body
         name: body
@@ -252,7 +229,8 @@ paths:
       operationId: loginUser
       produces:
       - application/json
-      - application/xml
+      consumes:
+      - application/json
       parameters:
       - in: body
         name: body
@@ -275,13 +253,15 @@ paths:
       operationId: logoutUser
       produces:
       - application/json
-      - application/xml
+      consumes:
+      - application/json
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       responses:
         200:
           description: item created
@@ -297,13 +277,13 @@ paths:
       operationId: getUserByName
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: Unique Username.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       responses:
         200:
           description: successful operation
@@ -319,13 +299,15 @@ paths:
       operationId: updateUser
       produces:
       - application/json
-      - application/xml
+      consumes:
+      - application/json
       parameters:
       - name: username
         in: path
         description: name that need to be updated
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - in: body
         name: body
         description: Updated user object
@@ -349,13 +331,13 @@ paths:
       operationId: deleteUser
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be deleted
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       responses:
         204:
           description: User Deleted Successfully
@@ -369,16 +351,15 @@ paths:
       operationId: addProject
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - in: body
         name: body
         description: Pet object that needs to be added to the store
@@ -403,16 +384,15 @@ paths:
       operationId: getProjects
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       responses:
         200:
           description: get projects
@@ -430,16 +410,15 @@ paths:
       operationId: updateProject
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -471,16 +450,15 @@ paths:
       operationId: getProject
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -500,16 +478,15 @@ paths:
       operationId: deleteProject
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -530,16 +507,15 @@ paths:
       operationId: createVirt
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -569,16 +545,15 @@ paths:
       operationId: getVirts
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -603,16 +578,15 @@ paths:
       operationId: updateVirt
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -645,16 +619,15 @@ paths:
       operationId: getVirt
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -679,16 +652,15 @@ paths:
       operationId: deleteVirt
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: username
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
         required: true
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       - name: projectname
         in: path
         description: The name that needs to be fetched. Use user1 for testing.
@@ -716,10 +688,8 @@ paths:
       operationId: optionsMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -741,10 +711,8 @@ paths:
       operationId: headMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -766,10 +734,8 @@ paths:
       operationId: patchMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -791,10 +757,8 @@ paths:
       operationId: deleteMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -816,10 +780,8 @@ paths:
       operationId: getMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -841,10 +803,8 @@ paths:
       operationId: putMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -866,10 +826,8 @@ paths:
       operationId: postMock
       consumes:
       - application/json
-      - application/xml
       produces:
       - application/json
-      - application/xml
       parameters:
       - name: virtId
         in: path
@@ -1058,6 +1016,7 @@ definitions:
     properties:
       username:
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       password:
         type: string
   Payment:
@@ -1102,6 +1061,7 @@ definitions:
     properties:
       username:
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       usernameavail:
         type: boolean
       phoneNumber:
@@ -1112,12 +1072,54 @@ definitions:
         type: string
       emailaddressavail:
         type: boolean
+  AvailRequest:
+    type: object
+    properties:
+      username:
+        type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
+      phoneNumber:
+        type: string
+      emailaddress:
+        type: string
   Password:
+    required:
+      - password
     type: object
     properties:
       password:
         type: string
       message:
+        type: string
+  PasswordUpdate:
+    required:
+    - username
+    - newPassword
+    type: object
+    properties:
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+      username:
+        type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
+  PasswordResetVerification:
+    required:
+    - username
+    type: object
+    properties:
+      username:
+        type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
+      email:
+        type: string
+      phoneNumber:
+        type: integer
+        format: int64
+      firstName:
+        type: string
+      lastName:
         type: string
   User:
     type: object
@@ -1127,6 +1129,7 @@ definitions:
         format: int64
       username:
         type: string
+        pattern: ^[a-zA-Z][0-9a-zA-Z@._]{3,31}$
       usertype:
         type: string
         enum:

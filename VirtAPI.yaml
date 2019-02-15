@@ -28,6 +28,8 @@ paths:
     get:
       tags:
       - delay
+      consumes:
+      - application/json
       operationId: simpleDelayMilliseconds
       summary: Simple Delay
       description: Simple Delay
@@ -46,13 +48,15 @@ paths:
     get:
       tags:
       - delay
+      produces:
+      - application/json
       operationId: simpleDelaySeconds
       summary: Simple Delay
       description: Simple Delay
       parameters:
       - name: time
         in: path
-        description: time in millisec
+        description: time in sec
         required: true
         type: string
       responses:
@@ -65,6 +69,8 @@ paths:
       tags:
       - delay
       operationId: simpleDelay
+      produces:
+      - application/json
       parameters:
       - name: time
         in: query
@@ -1292,3 +1298,4 @@ schemes:
 # basePath: /vamsiravi/virtapi
 # Added by API Auto Mocking Plugin
 basePath: /vamsiravi/virtapi
+7yhj9

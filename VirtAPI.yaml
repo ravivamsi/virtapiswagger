@@ -20,9 +20,100 @@ tags:
   - name: virt
   - name: payment
   - name: mock
+  - name: delay
 # - themes:
 # - http
 paths:
+  /delay/{time}/millisec:
+    get:
+      tags:
+      - delay
+      operationId: simpleDelayMilliseconds
+      summary: Simple Delay
+      description: Simple Delay
+      parameters:
+      - name: time
+        in: path
+        description: time in millisec
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Delay'
+  /delay/{time}/sec:
+    get:
+      tags:
+      - delay
+      operationId: simpleDelaySeconds
+      summary: Simple Delay
+      description: Simple Delay
+      parameters:
+      - name: time
+        in: path
+        description: time in millisec
+        required: true
+        type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Delay'
+  /delay:
+    get:
+      tags:
+      - delay
+      operationId: simpleDelay
+      parameters:
+      - name: time
+        in: query
+        description: Password field
+        type: string
+      - name: units
+        in: query
+        description: Password field
+        type: string
+        enum:
+        - seconds
+        - milliseconds
+      summary: Simple Delay
+      description: Simple Delay
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Delay'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequest'
+    post:
+      tags:
+      - delay
+      operationId: delay
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        description: request body to delay the response
+        required: true
+        schema:
+          $ref: '#/definitions/Delay'
+      summary: endpoint to delay the response time
+      description: Delay
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Delay'
+        400:
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/BadRequest'
   /password:
     get:
       tags:
@@ -1056,6 +1147,13 @@ definitions:
         type: string
       zip:
         type: string
+  BadRequest:
+    type: object
+    properties:
+      message:
+        type: string
+      field:
+        type: string
   Avail:
     type: object
     properties:
@@ -1121,6 +1219,16 @@ definitions:
         type: string
       lastName:
         type: string
+  Delay:
+    type: object
+    properties:
+      time:
+        type: integer
+      unit:
+        type: string
+        enum:
+        - seconds
+        - milliseconds
   User:
     type: object
     properties:
